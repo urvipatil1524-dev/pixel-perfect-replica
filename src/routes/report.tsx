@@ -19,7 +19,7 @@ export const Route = createFileRoute("/report")({
 const types = ["Overflowing Bin", "Garbage on Road", "Missed Pickup", "Illegal Dumping"];
 
 function Report() {
-  const [type, setType] = useState(types[0]);
+  const [type, setType] = useState<string>(types[0]!);
   const [location, setLocation] = useState("");
   const [done, setDone] = useState<string | null>(null);
 

@@ -19,7 +19,7 @@ export const Route = createFileRoute("/pickup")({
 const types = ["Wet Waste", "Dry Waste", "Recyclable Waste", "E-Waste"];
 
 function Pickup() {
-  const [type, setType] = useState(types[0]);
+  const [type, setType] = useState<string>(types[0]!);
   const [address, setAddress] = useState("");
   const [done, setDone] = useState<string | null>(null);
 
