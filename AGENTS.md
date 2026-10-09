@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Use the shared Button component for new interactive actions to keep focus, disabled and theme states consistent.
+- Admin request rows hold draft selections and persist only on explicit assignment or status submission, so choosing an option never silently changes a request.

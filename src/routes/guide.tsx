@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Leaf, Package, BatteryCharging, MapPin } from "lucide-react";
+import { Leaf, Package, BatteryCharging, MapPin, Trash2 } from "lucide-react";
 import { Layout, PageTitle } from "@/components/Layout";
 
 export const Route = createFileRoute("/guide")({
@@ -9,6 +9,8 @@ export const Route = createFileRoute("/guide")({
       { name: "description", content: "Learn which bin to use: green for wet waste, blue for dry, red for e-waste." },
       { property: "og:title", content: "Waste Segregation Guide" },
       { property: "og:description", content: "Simple guide to sorting your waste." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Guide,
@@ -27,12 +29,12 @@ function Guide() {
       <PageTitle title="Waste Segregation Guide" sub="Put the right waste in the right bin." />
       <div className="grid gap-5 md:grid-cols-3">
         {bins.map((b) => (
-          <div key={b.name} className={`rounded-3xl p-8 text-primary-foreground shadow-lg ${b.cls}`}>
-            <b.icon className="h-16 w-16" />
+          <article key={b.name} className={`rounded-lg p-8 text-primary-foreground ${b.cls}`}>
+            <div className="flex items-center justify-between"><Trash2 className="h-16 w-16" /><b.icon className="h-10 w-10" /></div>
             <h2 className="mt-4 text-3xl font-extrabold">{b.name}</h2>
             <p className="text-xl font-bold">{b.kind}</p>
             <p className="mt-2 text-lg opacity-90">{b.items}</p>
-          </div>
+          </article>
         ))}
       </div>
       <h2 className="mb-4 mt-12 text-2xl font-extrabold">Nearby bins</h2>

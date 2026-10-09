@@ -9,6 +9,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Report waste problems, request pickup, and help make our city cleaner." },
       { property: "og:title", content: "Smart Waste Management City" },
       { property: "og:description", content: "Report waste problems, request pickup, and help make our city cleaner." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Home,
