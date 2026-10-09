@@ -9,6 +9,8 @@ export const Route = createFileRoute("/guide")({
       { name: "description", content: "Learn which bin to use: green for wet waste, blue for dry, red for e-waste." },
       { property: "og:title", content: "Waste Segregation Guide" },
       { property: "og:description", content: "Simple guide to sorting your waste." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Guide,

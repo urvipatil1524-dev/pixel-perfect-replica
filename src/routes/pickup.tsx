@@ -11,6 +11,8 @@ export const Route = createFileRoute("/pickup")({
       { name: "description", content: "Book a home waste pickup for wet, dry, recyclable or e-waste." },
       { property: "og:title", content: "Request Pickup — Smart Waste City" },
       { property: "og:description", content: "Book a home waste pickup easily." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Pickup,

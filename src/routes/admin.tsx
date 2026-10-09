@@ -12,6 +12,8 @@ export const Route = createFileRoute("/admin")({
       { name: "description", content: "Manage complaints, pickups and collectors." },
       { property: "og:title", content: "Admin Dashboard — Smart Waste City" },
       { property: "og:description", content: "Manage complaints, pickups and collectors." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Admin,

@@ -12,6 +12,8 @@ export const Route = createFileRoute("/track")({
       { name: "description", content: "Check the status of your complaint or pickup request." },
       { property: "og:title", content: "Track My Request" },
       { property: "og:description", content: "Check the status of your complaint or pickup request." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Track,

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/report")({
       { name: "description", content: "Report overflowing bins, garbage on roads, missed pickups or illegal dumping." },
       { property: "og:title", content: "Report Waste — Smart Waste City" },
       { property: "og:description", content: "Report waste problems in your area in a few taps." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Report,
