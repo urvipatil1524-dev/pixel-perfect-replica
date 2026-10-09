@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Recycle, Menu, X, Phone } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 
 const links = [
   { to: "/", label: "Home" },
@@ -25,12 +26,12 @@ export function Layout({ children }: { children: ReactNode }) {
               <Link key={l.to} to={l.to} className="rounded-full px-4 py-2 font-bold hover:bg-accent" activeProps={{ className: "bg-primary text-primary-foreground hover:bg-primary" }} activeOptions={{ exact: true }}>{l.label}</Link>
             ))}
           </nav>
-          <button className="rounded-full p-2 lg:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+          <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full lg:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation">
             {open ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
-          </button>
+          </Button>
         </div>
         {open && (
-          <nav className="flex flex-col gap-1 border-t px-4 py-3 lg:hidden">
+          <nav id="mobile-navigation" className="flex flex-col gap-1 border-t px-4 py-3 lg:hidden">
             {links.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="rounded-xl px-4 py-3 text-lg font-bold hover:bg-accent" activeProps={{ className: "bg-primary text-primary-foreground" }} activeOptions={{ exact: true }}>{l.label}</Link>
             ))}

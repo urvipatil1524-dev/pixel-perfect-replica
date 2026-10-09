@@ -79,4 +79,4 @@
   &:hover { opacity: .92; transform: translateY(-1px); }
 }
 @utility btn-blue { background: var(--color-secondary); color: var(--color-secondary-foreground); }
-@utility card-box { background: var(--color-card); border: 1px solid var(--color-border); border-radius: calc(var(--radius) + 8px); padding: 1.5rem; box-shadow: 0 6px 24px -12px oklch(0.4 0.08 200 / 0.25); }
+@utility card-box { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.5rem; box-shadow: var(--shadow-card); }
