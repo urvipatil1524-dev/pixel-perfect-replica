@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Recycle, Menu, X, Phone } from "lucide-react";
+import { Leaf, Menu, X, Phone } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/tanstack-react-start";
 
 const links = [
   { to: "/", label: "Home" },
@@ -9,40 +10,55 @@ const links = [
   { to: "/pickup", label: "Request Pickup" },
   { to: "/guide", label: "Segregation Guide" },
   { to: "/track", label: "Track Request" },
-  { to: "/admin", label: "Admin" },
 ] as const;
 
 export function Layout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-20 border-b bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link to="/" className="flex items-center gap-2 text-xl font-extrabold text-primary">
-            <Recycle className="h-8 w-8" /> CleanCity
+    <div className="site-shell">
+      <header className="site-header">
+        <div className="site-header-inner">
+          <Link to="/" className="site-brand">
+            <span className="site-brand-mark"><Leaf aria-hidden="true" /></span>
+            CleanCity
           </Link>
-          <nav className="hidden gap-1 lg:flex">
-            {links.map((l) => (
-              <Link key={l.to} to={l.to} className="rounded-full px-4 py-2 font-bold hover:bg-accent" activeProps={{ className: "bg-primary text-primary-foreground hover:bg-primary" }} activeOptions={{ exact: true }}>{l.label}</Link>
+          <nav className="site-nav" aria-label="Main navigation">
+            {links.map((link) => (
+              <Link key={link.to} to={link.to} className="site-nav-link" activeProps={{ className: "is-active" }} activeOptions={{ exact: true }}>
+                {link.label}
+              </Link>
             ))}
           </nav>
-          <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full lg:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation">
-            {open ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
+          <div className="flex items-center gap-2">
+            <Show when="signed-out">
+              <SignInButton>
+                <Button variant="ghost" size="sm">Sign in</Button>
+              </SignInButton>
+              <SignUpButton>
+                <Button size="sm">Sign up</Button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in"><UserButton /></Show>
+          </div>
+          <Button variant="ghost" size="icon" className="site-menu-button" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation">
+            {open ? <X /> : <Menu />}
           </Button>
         </div>
         {open && (
-          <nav id="mobile-navigation" className="flex flex-col gap-1 border-t px-4 py-3 lg:hidden">
-            {links.map((l) => (
-              <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="rounded-xl px-4 py-3 text-lg font-bold hover:bg-accent" activeProps={{ className: "bg-primary text-primary-foreground" }} activeOptions={{ exact: true }}>{l.label}</Link>
+          <nav id="mobile-navigation" className="site-mobile-nav" aria-label="Mobile navigation">
+            {links.map((link) => (
+              <Link key={link.to} to={link.to} onClick={() => setOpen(false)} className="site-mobile-link" activeProps={{ className: "is-active" }} activeOptions={{ exact: true }}>
+                {link.label}
+              </Link>
             ))}
           </nav>
         )}
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-      <footer className="bg-secondary text-secondary-foreground">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-center sm:flex-row">
-          <p className="font-bold">Smart Waste Management City Website</p>
-          <a href="tel:18001234567" className="flex items-center gap-2 font-bold"><Phone className="h-5 w-5" /> Help: 1800-123-4567</a>
+      <main className="site-main">{children}</main>
+      <footer className="site-footer">
+        <div className="site-footer-inner">
+          <p className="site-footer-brand">A cleaner city is something we create together.</p>
+          <a href="tel:18001234567" className="site-help"><Phone aria-hidden="true" /> Help: 1800-123-4567</a>
         </div>
       </footer>
     </div>
@@ -51,9 +67,9 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export function PageTitle({ title, sub }: { title: string; sub?: string }) {
   return (
-    <div className="mb-8">
-      <h1 className="text-3xl font-extrabold sm:text-4xl">{title}</h1>
-      {sub && <p className="mt-2 text-lg text-muted-foreground">{sub}</p>}
+    <div className="site-page-title">
+      <h1>{title}</h1>
+      {sub && <p>{sub}</p>}
     </div>
   );
 }

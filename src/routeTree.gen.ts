@@ -15,6 +15,8 @@ import { Route as GuideRouteImport } from './routes/guide'
 import { Route as PickupRouteImport } from './routes/pickup'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as TrackRouteImport } from './routes/track'
+import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
+import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +48,16 @@ const TrackRoute = TrackRouteImport.update({
   path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignInSplatRoute = SignInSplatRouteImport.update({
+  id: '/sign-in/$',
+  path: '/sign-in/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignUpSplatRoute = SignUpSplatRouteImport.update({
+  id: '/sign-up/$',
+  path: '/sign-up/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +66,8 @@ export interface FileRoutesByFullPath {
   '/pickup': typeof PickupRoute
   '/report': typeof ReportRoute
   '/track': typeof TrackRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +76,8 @@ export interface FileRoutesByTo {
   '/pickup': typeof PickupRoute
   '/report': typeof ReportRoute
   '/track': typeof TrackRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +87,40 @@ export interface FileRoutesById {
   '/pickup': typeof PickupRoute
   '/report': typeof ReportRoute
   '/track': typeof TrackRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/guide' | '/pickup' | '/report' | '/track'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/guide'
+    | '/pickup'
+    | '/report'
+    | '/track'
+    | '/sign-in/$'
+    | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/guide' | '/pickup' | '/report' | '/track'
-  id: '__root__' | '/' | '/admin' | '/guide' | '/pickup' | '/report' | '/track'
+  to:
+    | '/'
+    | '/admin'
+    | '/guide'
+    | '/pickup'
+    | '/report'
+    | '/track'
+    | '/sign-in/$'
+    | '/sign-up/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/guide'
+    | '/pickup'
+    | '/report'
+    | '/track'
+    | '/sign-in/$'
+    | '/sign-up/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -87,6 +130,8 @@ export interface RootRouteChildren {
   PickupRoute: typeof PickupRoute
   ReportRoute: typeof ReportRoute
   TrackRoute: typeof TrackRoute
+  SignInSplatRoute: typeof SignInSplatRoute
+  SignUpSplatRoute: typeof SignUpSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -133,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sign-in/$': {
+      id: '/sign-in/$'
+      path: '/sign-in/$'
+      fullPath: '/sign-in/$'
+      preLoaderRoute: typeof SignInSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-up/$': {
+      id: '/sign-up/$'
+      path: '/sign-up/$'
+      fullPath: '/sign-up/$'
+      preLoaderRoute: typeof SignUpSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -143,6 +202,8 @@ const rootRouteChildren: RootRouteChildren = {
   PickupRoute: PickupRoute,
   ReportRoute: ReportRoute,
   TrackRoute: TrackRoute,
+  SignInSplatRoute: SignInSplatRoute,
+  SignUpSplatRoute: SignUpSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -24,6 +24,25 @@ function Pickup() {
   const [type, setType] = useState<string>(types[0]!);
   const [address, setAddress] = useState("");
   const [done, setDone] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [preferredDate, setPreferredDate] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const submitPickup = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+    try {
+      const item = await addItem({ data: { kind: "Pickup", type, location: address, contactName: name, contactPhone: phone, preferredDate } });
+      setDone(item.id);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not submit your pickup request.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (done) return (
     <Layout>
@@ -39,9 +58,9 @@ function Pickup() {
   return (
     <Layout>
       <PageTitle title="Request Pickup" sub="We will collect waste from your home." />
-      <form className="card-box mx-auto max-w-2xl space-y-5" onSubmit={(e) => { e.preventDefault(); setDone(addItem({ kind: "Pickup", type, location: address }).id); }}>
-        <label className="block"><span className="mb-2 block font-bold">Name</span><input required className="field" /></label>
-        <label className="block"><span className="mb-2 block font-bold">Mobile number</span><input required type="tel" pattern="[0-9+ ]{10,14}" className="field" /></label>
+      <form className="card-box mx-auto max-w-2xl space-y-5" onSubmit={submitPickup}>
+        <label className="block"><span className="mb-2 block font-bold">Name</span><input required maxLength={120} className="field" value={name} onChange={(event) => setName(event.target.value)} /></label>
+        <label className="block"><span className="mb-2 block font-bold">Mobile number</span><input required type="tel" pattern="[0-9+ ]{10,14}" className="field" value={phone} onChange={(event) => setPhone(event.target.value)} /></label>
         <label className="block"><span className="mb-2 block font-bold">Address</span><textarea required rows={2} className="field" value={address} onChange={(e) => setAddress(e.target.value)} /></label>
         <div>
           <span className="mb-2 block font-bold">Waste type</span>
@@ -51,8 +70,9 @@ function Pickup() {
             ))}
           </div>
         </div>
-        <label className="block"><span className="mb-2 block font-bold">Preferred pickup date</span><input required type="date" className="field" /></label>
-        <button className="btn btn-blue w-full">Submit request</button>
+        <label className="block"><span className="mb-2 block font-bold">Preferred pickup date</span><input required type="date" className="field" value={preferredDate} onChange={(event) => setPreferredDate(event.target.value)} /></label>
+        {error && <p role="alert" className="text-sm font-bold text-destructive">{error}</p>}
+        <button className="btn btn-blue w-full" disabled={submitting}>{submitting ? "Submitting…" : "Submit request"}</button>
       </form>
     </Layout>
   );

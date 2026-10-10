@@ -24,6 +24,23 @@ function Report() {
   const [type, setType] = useState<string>(types[0]!);
   const [location, setLocation] = useState("");
   const [done, setDone] = useState<string | null>(null);
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const submitReport = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+    try {
+      const item = await addItem({ data: { kind: "Complaint", type, location, description } });
+      setDone(item.id);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not submit your report.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const useGps = () => navigator.geolocation?.getCurrentPosition(
     (p) => setLocation(`${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`),
@@ -45,7 +62,7 @@ function Report() {
   return (
     <Layout>
       <PageTitle title="Report Waste" sub="Tell us about a waste problem near you." />
-      <form className="card-box mx-auto max-w-2xl space-y-6" onSubmit={(e) => { e.preventDefault(); setDone(addItem({ kind: "Complaint", type, location }).id); }}>
+      <form className="card-box mx-auto max-w-2xl space-y-6" onSubmit={submitReport}>
         <div>
           <p className="mb-3 font-bold">1. What is the problem?</p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -65,9 +82,10 @@ function Report() {
         </div>
         <label className="block">
           <span className="mb-2 block font-bold">4. Short description</span>
-          <textarea className="field" rows={3} placeholder="Describe the problem" />
+          <textarea className="field" rows={3} placeholder="Describe the problem" value={description} onChange={(event) => setDescription(event.target.value)} />
         </label>
-        <button className="btn w-full">Submit</button>
+        {error && <p role="alert" className="text-sm font-bold text-destructive">{error}</p>}
+        <button className="btn w-full" disabled={submitting}>{submitting ? "Submitting…" : "Submit"}</button>
       </form>
     </Layout>
   );

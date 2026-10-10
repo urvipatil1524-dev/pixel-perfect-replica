@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, Search } from "lucide-react";
 import { Layout, PageTitle } from "@/components/Layout";
-import { getItems, STATUSES, type Item } from "@/lib/store";
+import { findItem, STATUSES, type Item } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/track")({
@@ -22,14 +22,17 @@ export const Route = createFileRoute("/track")({
 function Track() {
   const [id, setId] = useState("");
   const [result, setResult] = useState<Item | null | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const step = result ? STATUSES.indexOf(result.status) : -1;
   return (
     <Layout>
       <PageTitle title="Track My Request" sub="Check the progress of your complaint or pickup." />
-      <form className="mx-auto flex max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:items-end" onSubmit={(e) => { e.preventDefault(); setResult(getItems().find((i) => i.id.toLowerCase() === id.trim().toLowerCase()) ?? null); }}>
+      <form className="mx-auto flex max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:items-end" onSubmit={async (event) => { event.preventDefault(); setLoading(true); setError(""); try { setResult(await findItem({ data: { id } })); } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not look up this request."); } finally { setLoading(false); } }}>
         <label className="min-w-0 flex-1"><span className="mb-2 block font-bold">Complaint or request ID</span><input className="field" placeholder="e.g. CMP-1001" value={id} onChange={(e) => { setId(e.target.value); setResult(undefined); }} required /></label>
-        <Button type="submit" className="h-14 rounded-full px-7 text-lg"><Search /> Track request</Button>
+        <Button type="submit" disabled={loading} className="h-14 rounded-full px-7 text-lg"><Search /> {loading ? "Searching…" : "Track request"}</Button>
       </form>
+      {error && <p role="alert" className="mt-6 text-center text-lg font-bold text-destructive">{error}</p>}
       {result === null && <p role="alert" className="mt-6 text-center text-lg font-bold text-destructive">No request found with this ID. Please check the ID and try again.</p>}
       {result && (
         <div className="card-box mx-auto mt-6 max-w-2xl">
